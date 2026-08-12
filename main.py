@@ -72,14 +72,14 @@ cursor.execute("SELECT * FROM students")
 print(cursor.fetchall())
 
 # view students with course names
-cursor.execute("""
-SELECT students.name, students.age, courses.course_name, students.mark
-FROM students
-INNER JOIN courses 
-ON students.course_id = courses.id
-""")
-
-print(cursor.fetchall())
+def view_students():
+    cursor.execute("""
+    SELECT students.name, students.age, courses.course_name, students.mark
+    FROM students
+    INNER JOIN courses 
+    ON students.course_id = courses.id
+    """)
+    print(cursor.fetchall())
 
 # Update student
 def update_student():
@@ -126,6 +126,38 @@ def search_student():
     """,(name,))
 
     print(cursor.fetchall())
+
+# Main menu
+def main_menu():
+    while True:
+        print("\n====Student Management System====")
+        print("1. Add student")
+        print("2. View students")
+        print("3. Update student")
+        print("4. Delete student")
+        print("5. Search student")
+        print("6. exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            add_student()
+        elif choice == "2":
+            view_students()
+        elif choice == "3":
+            update_student()
+        elif choice == "4":
+            delete_student()
+        elif choice == "5":
+            search_student()
+        elif choice == "6":
+            print("Thank You!")
+            break
+        else:
+            print("invalid choice")
+
+main_menu()
+
 
 
 
