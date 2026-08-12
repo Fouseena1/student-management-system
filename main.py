@@ -97,3 +97,19 @@ def update_student():
 
 cursor.execute("SELECT * FROM students")
 print(cursor.fetchall())
+
+# Delete student
+def delete_student():
+    student_id = int(input("Enter Student ID to delete: "))
+
+    cursor.execute("""
+    DELETE FROM students
+    WHERE id = ?
+    """,(student_id,))
+
+    connection.commit()
+    print("Student deleted successfully")
+
+cursor.execute("SELECT * FROM students")
+print(cursor.fetchall())
+
