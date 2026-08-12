@@ -113,3 +113,19 @@ def delete_student():
 cursor.execute("SELECT * FROM students")
 print(cursor.fetchall())
 
+# search student
+def search_student():
+    name = input("Enter student name to search: ")
+
+    cursor.execute("""
+    SELECT students.name, students.age, courses.course_name, students.mark
+    FROM students
+    INNER JOIN courses
+    ON students.course_id = courses.id
+    WHERE students.name = ?
+    """,(name,))
+
+    print(cursor.fetchall())
+
+
+
