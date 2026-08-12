@@ -54,10 +54,40 @@ connection.commit()
 
 # Add student function
 def add_student():
-    name=input("Enter student name: ")
-    age=int(input("Enter age: "))
-    course_id=int(input("Enter course ID: "))
-    mark=int(input("Enter mark: "))
+
+    while True:
+        name=input("Enter student name: ").strip()
+
+        if name:
+            break
+        print("name cannot be empty.")
+
+    while True:
+        age=int(input("Enter age: "))
+
+        if age > 0:
+            break
+        print("Invalid age. Please enter a valid age.")
+
+    while True:
+        course_id=int(input("Enter course ID: "))
+
+        cursor.execute(
+            "SELECT id FROM courses WHERE id = ?",
+            (course_id,)
+        )
+
+        if cursor.fetchone():
+            break
+
+        print("Invalid course ID. Please enter a valid course ID. ")
+
+    while True:
+        mark=int(input("Enter mark (0-100): "))
+
+        if 0 <= mark <= 100:
+            break
+        print("invalid mark. Please enter a mark between 0 and 100.")
 
     cursor.execute("""
     INSERT INTO students(name,age,course_id,mark)
@@ -84,7 +114,13 @@ def view_students():
 # Update student
 def update_student():
     student_id = int(input("Enter Student ID: "))
-    new_mark = int(input("Enter new mark: "))
+
+    while True:
+        new_mark = int(input("Enter new mark: "))
+
+        if 0 <= new_mark <=100:
+            break
+        print("Invalid mark. Please enter a valid mark.")
 
     cursor.execute("""
     UPDATE students
