@@ -80,3 +80,20 @@ ON students.course_id = courses.id
 """)
 
 print(cursor.fetchall())
+
+# Update student
+def update_student():
+    student_id = int(input("Enter Student ID: "))
+    new_mark = int(input("Enter new mark: "))
+
+    cursor.execute("""
+    UPDATE students
+    SET mark = ?
+    WHERE id = ?
+    """,(new_mark,student_id))
+
+    connection.commit()
+    print("Student updated successfully")
+
+cursor.execute("SELECT * FROM students")
+print(cursor.fetchall())
