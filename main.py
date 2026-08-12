@@ -108,6 +108,7 @@ def view_students():
     FROM students
     INNER JOIN courses 
     ON students.course_id = courses.id
+    ORDER BY students.mark DESC
     """)
     print(cursor.fetchall())
 
@@ -163,6 +164,39 @@ def search_student():
 
     print(cursor.fetchall())
 
+# Student statistics
+def student_statistics():
+    cursor.execute("""
+    SELECT
+        COUNT(*),
+        AVG(mark),
+        MAX(mark),
+        MIN(mark)
+    FROM students
+    """)
+
+    total_students, average_mark, highest_mark, lowest_mark = cursor.fetchone()
+
+    print("Total students:", total_students)
+    print("Average mark:", average_mark)
+    print("Highest mark:", highest_mark)
+    print("Lowest mark:", lowest_mark)
+
+# Course-wise student count
+def course_statistics():
+    cursor.execute("""
+    SELECT courses.course_name, COUNT(students.id)
+    FROM courses
+    LEFT JOIN students
+    ON courses.id = students.course_id
+    GROUP BY courses.id
+    """)
+
+    results = cursor.fetchall()
+
+    for course_name, student_count in results:
+        print(course_name, ":", student_count, "students")
+
 # Main menu
 def main_menu():
     while True:
@@ -172,7 +206,9 @@ def main_menu():
         print("3. Update student")
         print("4. Delete student")
         print("5. Search student")
-        print("6. exit")
+        print("6. Student statistics")
+        print("7. Course statistics")
+        print("8. Exit")
 
         choice = input("Enter your choice: ")
 
@@ -187,6 +223,10 @@ def main_menu():
         elif choice == "5":
             search_student()
         elif choice == "6":
+            student_statistics()
+        elif choice == "7":
+            course_statistics()
+        elif choice == "8":
             print("Thank You!")
             break
         else:
